@@ -20,7 +20,7 @@ Un'app web sviluppata con **React** per aiutare a ritrovare la calma interiore a
 
 1. Clona la repository:
    ```bash
-   git clone https://github.com/tuo-username/clearmind.git
+   git clone https://github.com/mrbrollo/clearmind.git
    cd clearmind
    ```
 
