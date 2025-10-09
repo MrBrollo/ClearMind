@@ -8,20 +8,20 @@ export default function useMeditationTimer(initialMinutes = 5) {
 
     const intervalRef = useRef(null);
 
-    // Avvia il timer
+    // 🔹 Avvia il timer
     const start = () => {
         if (isRunning) return;
         if (!hasStarted) setHasStarted(true);
         setIsRunning(true);
     };
 
-    // Metti in pausa il timer
+    // 🔹 Metti in pausa il timer
     const pause = () => {
         clearInterval(intervalRef.current);
         setIsRunning(false);
     };
 
-    // Reset completo
+    // 🔹 Reset completo
     const reset = () => {
         clearInterval(intervalRef.current);
         setSecondsLeft(minutes * 60);
@@ -29,7 +29,7 @@ export default function useMeditationTimer(initialMinutes = 5) {
         setHasStarted(false);
     };
 
-    // Gestione countdown
+    // 🔹 Gestione countdown
     useEffect(() => {
         if (isRunning && secondsLeft > 0) {
             intervalRef.current = setInterval(() => {
@@ -40,7 +40,7 @@ export default function useMeditationTimer(initialMinutes = 5) {
         return () => clearInterval(intervalRef.current);
     }, [isRunning]);
 
-    // Se il timer non è in esecuzione, aggiorna il tempo SOLO quando cambia minutes
+    // 🔹 Se il timer non è in esecuzione, aggiorna il tempo SOLO quando cambia minutes
     useEffect(() => {
         if (!isRunning && !hasStarted) {
             setSecondsLeft(minutes * 60);
