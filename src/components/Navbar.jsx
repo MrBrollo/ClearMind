@@ -29,7 +29,7 @@ export default function Navbar() {
                 {/* Pulsante */}
                 <button
                     onClick={scrollToTimer}
-                    className="hidden md:block px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
+                    className="px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm md:px-6 md:py-3 md:text-base bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition">
                     Inizia ora la tua meditazione
                 </button>
             </div>
