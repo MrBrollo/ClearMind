@@ -1,3 +1,5 @@
+import useMeditationTimer from "../hooks/useMeditationTimer";
+
 export default function MeditationTimer({
     minutes,
     setMinutes,
@@ -25,8 +27,11 @@ export default function MeditationTimer({
                         min="1"
                         max="120"
                         value={minutes}
-                        onChange={(e) => setMinutes(Number(e.target.value))}
-                        className="w-20 p-2 border rounded-md text-center bg-gray-50"
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            if (val >= 1) setMinutes(val);
+                        }}
+                        className="w-20 p-2 border rounded-md text-center bg-gray-50 transition-all duration-300 ease-in-out"
                     />
                 </div>
             )}

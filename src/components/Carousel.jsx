@@ -8,7 +8,7 @@ import img3 from "../assets/img/waterfall.jpg";
 const slides = [
     { img: img1, text: "Il silenzio è lo spazio in cui la mente ritrova pace." },
     { img: img2, text: "Respira profondamente, lascia andare i pensieri e ritrova te stesso." },
-    { img: img3, text: "Come l’acqua scorre libera, così la mente si apre alla serenità." },
+    { img: img3, text: "Come l'acqua scorre libera, così la mente si apre alla serenità." },
 ];
 
 export default function Carousel() {
