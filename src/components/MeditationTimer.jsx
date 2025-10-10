@@ -9,6 +9,7 @@ export default function MeditationTimer({
     pause,
     reset,
     formatTime,
+    secondsLeft = 0,
 }) {
     return (
         <div
@@ -41,21 +42,23 @@ export default function MeditationTimer({
             </div>
 
             <div className="flex gap-4">
-                {!isRunning ? (
-                    <button
-                        onClick={start}
-                        className="px-6 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600"
-                    >
-                        {hasStarted ? "Riprendi" : "Start"}
-                    </button>
-                ) : (
-                    <button
-                        onClick={pause}
-                        className="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600"
-                    >
-                        Pausa
-                    </button>
-                )}
+                {secondsLeft > 0 ? (
+                    !isRunning ? (
+                        <button
+                            onClick={start}
+                            className="px-6 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600"
+                        >
+                            {hasStarted ? "Riprendi" : "Start"}
+                        </button>
+                    ) : (
+                        <button
+                            onClick={pause}
+                            className="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600"
+                        >
+                            Pausa
+                        </button>
+                    )
+                ) : null}
 
                 <button
                     onClick={reset}

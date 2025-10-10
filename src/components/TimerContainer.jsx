@@ -44,6 +44,7 @@ export default function TimerContainer() {
                 pause={pause}
                 reset={reset}
                 formatTime={formatTime}
+                secondsLeft={secondsLeft}
             />
 
             <audio ref={audioRef}>
