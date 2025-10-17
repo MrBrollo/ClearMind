@@ -1,71 +1,119 @@
-import useMeditationTimer from "../hooks/useMeditationTimer";
+import React, { useEffect, useState, useRef } from "react";
+import useTimer from "../hooks/useTimer";
+import useAudio from "../hooks/useAudio";
+import bellSound from "../assets/sounds/meditationBell.mp3";
 
-export default function MeditationTimer({
-    minutes,
-    setMinutes,
-    hasStarted,
-    isRunning,
-    start,
-    pause,
-    reset,
-    formatTime,
-    secondsLeft = 0,
-}) {
+export default function MeditationTimer() {
+    const {
+        minutes,
+        setMinutes,
+        secondsLeft,
+        isRunning,
+        start,
+        pause,
+        reset,
+        formatTime,
+    } = useTimer(5);
+
+    const { play } = useAudio(bellSound, 5000);
+    const [minutesInput, setMinutesInput] = useState(String(minutes));
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        setMinutesInput(String(minutes));
+    }, [minutes]);
+
+    useEffect(() => {
+        if (secondsLeft === 0 && isRunning) {
+            pause();
+            play();
+        }
+    }, [secondsLeft, isRunning, pause, play]);
+
+    const isStarted = secondsLeft < minutes * 60;
+
+    const handleMinutesInputChange = (e) => {
+        setMinutesInput(e.target.value);
+    };
+
+    const handleMinutesInputBlur = () => {
+        let num = Number(minutesInput);
+        if (isNaN(num) || num < 1) num = 1;
+        if (num > 120) num = 120;
+        setMinutes(num);
+        setMinutesInput(String(num));
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            inputRef.current.blur();
+        }
+    };
+
+
     return (
-        <div
-            id="timer"
-            className="mt-12 flex flex-col items-center justify-center bg-[#e6f2ed] p-6 rounded-2xl shadow-md"
-        >
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                Timer di Meditazione
-            </h2>
+        <div className="flex flex-col items-center text-center mt-10 space-y-4">
+            <h2 className="text-2xl font-semibold text-emerald-700">Timer di Meditazione</h2>
 
-            {!hasStarted && (
-                <div className="flex items-center gap-2 mb-4">
-                    <label className="text-gray-600">Durata (minuti):</label>
+            <div className="flex flex-col items-center space-y-4">
+                <div className="text-5xl font-bold text-emerald-800">
+                    {formatTime(secondsLeft)}
+                </div>
+
+                <div className="flex items-center space-x-2">
+                    <label htmlFor="minutes" className="text-gray-700 text-sm">
+                        Minuti:
+                    </label>
                     <input
+                        id="minutes"
+                        ref={inputRef}
                         type="number"
                         min="1"
                         max="120"
-                        value={minutes}
-                        onChange={(e) => {
-                            const val = Number(e.target.value);
-                            if (val >= 1) setMinutes(val);
-                        }}
-                        className="w-20 p-2 border rounded-md text-center bg-gray-50 transition-all duration-300 ease-in-out"
+                        value={minutesInput}
+                        onChange={handleMinutesInputChange}
+                        onBlur={handleMinutesInputBlur}
+                        onKeyDown={handleKeyDown}
+                        disabled={isRunning}
+                        className="w-20 p-1 border border-emerald-400 rounded text-center focus:ring-2 focus:ring-emerald-400"
                     />
                 </div>
-            )}
 
-            <div className="text-4xl font-mono text-gray-700 mb-4">
-                {formatTime()}
-            </div>
-
-            <div className="flex gap-4">
-                {secondsLeft > 0 ? (
-                    !isRunning ? (
+                <div className="flex space-x-3">
+                    {!isRunning && secondsLeft === 0 ? (
                         <button
-                            onClick={start}
-                            className="px-6 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600"
+                            onClick={reset}
+                            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition"
                         >
-                            {hasStarted ? "Riprendi" : "Start"}
+                            Reset
                         </button>
                     ) : (
-                        <button
-                            onClick={pause}
-                            className="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600"
-                        >
-                            Pausa
-                        </button>
-                    )
-                ) : null}
+                        <>
+                            {!isRunning ? (
+                                <button
+                                    onClick={start}
+                                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition"
+                                >
+                                    Start
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={pause}
+                                    className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded transition"
+                                >
+                                    Pausa
+                                </button>
+                            )}
 
-                <button
-                    onClick={reset}
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600"
-                >
-                    Reset
-                </button>
+                            <button
+                                onClick={reset}
+                                className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded transition"
+                            >
+                                Reset
+                            </button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
