@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import useTimer from "../hooks/useTimer";
 import useAudio from "../hooks/useAudio";
 import TimerInput from "./TimerInput";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function TimerInput({ minutes, onMinutesChange, disabled }) {
     const [minutesInput, setMinutesInput] = useState(String(minutes));

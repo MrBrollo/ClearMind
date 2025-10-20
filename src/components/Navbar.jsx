@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -56,8 +56,8 @@ export default function Navbar() {
                         : "bg-green-500 text-white hover:bg-green-600"
                     }
           active:scale-95
-          px-6 py-2
-          sm:px-5 sm:py-2
+          p-2 w-[8rem]
+          sm:px-5 sm:py-2 sm:w-max
           md:px-6 md:py-2
           lg:px-8 lg:py-3
           text-sm sm:text-sm md:text-base

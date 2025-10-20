@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function TimerControls({ secondsLeft, isRunning, onStart, onPause, onReset }) {
     return (
         <div className="flex space-x-3 mb-4">
