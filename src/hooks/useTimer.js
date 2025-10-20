@@ -37,9 +37,17 @@ export default function useTimer(initialMinutes = 5) {
         }
 
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current)
+                clearInterval(intervalRef.current);
+            intervalRef.current = null;
         };
     }, [isRunning]);
+
+    useEffect(() => {
+        if (!isRunning) {
+            setSecondsLeft(minutes * 60);
+        }
+    }, [minutes, isRunning]);
 
     // Formatta mm:ss
     const formatTime = useCallback(() => {
@@ -54,6 +62,7 @@ export default function useTimer(initialMinutes = 5) {
         minutes,
         setMinutes,
         secondsLeft,
+        setSecondsLeft,
         isRunning,
         start,
         pause,

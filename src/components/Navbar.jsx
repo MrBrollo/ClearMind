@@ -40,7 +40,7 @@ export default function Navbar() {
         >
             {/* Logo */}
             <h1
-                className={`text-2xl font-bold select-none transition-colors duration-500 ${isScrolled ? "text-gray-700" : "text-emerald-300"
+                className={`text-2xl font-bold select-none transition-colors duration-500 ${isScrolled ? "text-white" : "text-emerald-300"
                     }`}
             >
                 ClearMind
