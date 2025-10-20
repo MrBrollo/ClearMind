@@ -24,39 +24,52 @@ export default function useTimer(initialMinutes = 5) {
 
     // Reset del timer
     const reset = useCallback(() => {
-        pause();
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+        setIsRunning(false);
         setSecondsLeft(minutes * 60);
-    }, [minutes, pause]);
+    }, [minutes]);
 
-    // Gestione countdown
+    // Formatta mm:ss
+    const formatTime = useCallback((seconds) => {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+    }, []);
+
+    // Gestione countdown - crea intervallo solo quando isRunning cambia
     useEffect(() => {
         if (isRunning) {
             intervalRef.current = setInterval(() => {
-                setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+                setSecondsLeft((prev) => {
+                    if (prev <= 1) {
+                        // Quando arriva a zero, ferma il timer
+                        clearInterval(intervalRef.current);
+                        intervalRef.current = null;
+                        setIsRunning(false);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
             }, 1000);
         }
 
         return () => {
-            if (intervalRef.current)
+            if (intervalRef.current) {
                 clearInterval(intervalRef.current);
-            intervalRef.current = null;
+                intervalRef.current = null;
+            }
         };
     }, [isRunning]);
 
+    // Aggiorna secondsLeft quando minutes cambia (ma solo se il timer non è mai stato avviato)
     useEffect(() => {
-        if (!isRunning) {
+        if (!isRunning && secondsLeft === minutes * 60) {
             setSecondsLeft(minutes * 60);
         }
-    }, [minutes, isRunning]);
-
-    // Formatta mm:ss
-    const formatTime = useCallback(() => {
-        const m = Math.floor(secondsLeft / 60);
-        const s = secondsLeft % 60;
-        return `${m.toString().padStart(2, "0")}:${s
-            .toString()
-            .padStart(2, "0")}`;
-    }, [secondsLeft]);
+    }, [minutes, isRunning, secondsLeft]);
 
     return {
         minutes,
